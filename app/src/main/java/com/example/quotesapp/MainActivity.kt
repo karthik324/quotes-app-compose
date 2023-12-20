@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.quotesapp.screens.QuoteDetail
 import com.example.quotesapp.screens.QuoteListScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,8 +33,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     if (DataManager.isLoaded.value) {
-        QuoteListScreen(data = DataManager.data) {
-
+        if(DataManager.currPage.value == Pages.Listing){
+            QuoteListScreen(data = DataManager.data) {
+                DataManager.switchPage(it)
+            }
+        } else {
+            DataManager.currQuote?.let { QuoteDetail(quote = it) }
         }
     } else {
         Box(
